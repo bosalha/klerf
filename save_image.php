@@ -2,7 +2,7 @@
 
 
 // المسار الذي تود حفظ الصورة به على السيرفر
-$save_path = 'C:/Users/عبدالله بوصلحه/Documents/GitHub/klerf/myphoto/';
+$save_path = 'C:/Users/عبدالله بوصلحه/Documents/GitHub/klerf/';
 
 // استقبال الصورة المرسلة عبر الـ POST
 $imageData = $_POST['imageData'];
