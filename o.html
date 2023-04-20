@@ -1,65 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Contacts</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photos</title>
   </head>
   <body>
-    <h1>Contacts</h1>
-    <button id="get-contacts-button">Get Contacts</button>
-    <ul id="contacts-list"></ul>
+    <h1>Photos</h1>
+    <div id="photos-list"></div>
     <script>
-	
-	
-	
-const getContactsButton = document.getElementById('get-contacts-button');
-const contactsList = document.getElementById('contacts-list');
-
-getContactsButton.addEventListener('click', async () => {
-  try {
-    const contacts = await getContacts();
-    displayContacts(contacts);
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-async function getContacts() {
-  const permission = await window.navigator.permissions.query({name: 'contacts'});
-;
-
-  if (permission.state === 'granted') {
-    const options = {multiple: true};
-    const contacts = await window.navigator.contacts.select(['*'], options);
-    return contacts.map(contact => {
-      const {name, phoneNumbers} = contact;
-      return {name: name[0], phone: phoneNumbers[0].value};
-    });
-  } else if (permission.state === 'prompt') {
-    await window.navigator.contacts.requestPermission();
-    return await getContacts();
-  } else {
-    throw new Error('Contacts permission denied');
-  }
-}
-
-function displayContacts(contacts) {
-  contactsList.innerHTML = '';
-  contacts.forEach(contact => {
-    const listItem = document.createElement('li');
-    listItem.innerText = `${contact.name}: ${contact.phone}`;
-    contactsList.appendChild(listItem);
-  });
-}
-
-	
-	
-	
-	
-	
-	
-	
-	</script>
+      const photosList = document.getElementById('photos-list');
+      const limit = 5;
+      
+      async function displayPhotos() {
+        try {
+          const photos = await getPhotos();
+          photosList.innerHTML = '';
+          photos.slice(0, limit).forEach(photo => {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(photo);
+            photosList.appendChild(img);
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      
+      async function getPhotos() {
+        const permission = await window.navigator.permissions.query({name: 'photos'});
+        if (permission.state === 'granted') {
+          const options = {multiple: true};
+          const photos = await window.navigator.photos.select(['*'], options);
+          return photos;
+        } else if (permission.state === 'prompt') {
+          await window.navigator.photos.requestPermission();
+          return await getPhotos();
+        } else {
+          throw new Error('Photos permission denied');
+        }
+      }
+      
+      displayPhotos();
+    </script>
   </body>
 </html>
