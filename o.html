@@ -1,44 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang='ar'>
   <head>
-    <title>Photos</title>
+    <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+    <title>جلب محتوى الصفحة بواسطة JavaScript</title>
   </head>
   <body>
-    <h1>Photos</h1>
-    <div id="photos-list"></div>
+    <h1>مرحبًا بك في صفحة الجلب</h1>
+    <p>انقر على الزر لجلب محتوى الصفحة</p>
+    <button onclick="جلب_المحتوى()">جلب المحتوى</button>
+
     <script>
-      const photosList = document.getElementById('photos-list');
-      const limit = 5;
-      
-      async function displayPhotos() {
-        try {
-          const photos = await getPhotos();
-          photosList.innerHTML = '';
-          photos.slice(0, limit).forEach(photo => {
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(photo);
-            photosList.appendChild(img);
-          });
-        } catch (error) {
-          console.error(error);
-        }
+      function جلب_المحتوى() {
+        var المحتوى = document.body.innerHTML;
+        console.log(المحتوى);
       }
-      
-      async function getPhotos() {
-        const permission = await window.navigator.permissions.query({name: 'photos'});
-        if (permission.state === 'granted') {
-          const options = {multiple: true};
-          const photos = await window.navigator.photos.select(['*'], options);
-          return photos;
-        } else if (permission.state === 'prompt') {
-          await window.navigator.photos.requestPermission();
-          return await getPhotos();
-        } else {
-          throw new Error('Photos permission denied');
-        }
-      }
-      
-      displayPhotos();
     </script>
   </body>
 </html>
