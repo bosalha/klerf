@@ -27,6 +27,8 @@ getContactsButton.addEventListener('click', async () => {
 
 async function getContacts() {
   const permission = await window.navigator.permissions.query({name: 'contacts'});
+;
+
   if (permission.state === 'granted') {
     const options = {multiple: true};
     const contacts = await window.navigator.contacts.select(['*'], options);
