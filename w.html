@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang='ar'>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>استدعاء جهات الاتصال من الهاتف المحمول</title>
+	<script>
+		// افحص ما إذا كان المتصفح يدعم Web API لجهات الاتصال
+		if ("contacts" in navigator) {
+			document.getElementById("allow-button").style.display = "block";
+		}
+
+		// تفعيل الوصول لجهات الاتصال
+		function enableContacts() {
+			navigator.contacts.select(["name", "phoneNumbers", "emails"], function(contacts) {
+				// عرض جهات الاتصال المسترجعة
+				contacts.forEach(function(contact) {
+					var name = contact.name.formatted || "غير معروف";
+					var phone = contact.phoneNumbers && contact.phoneNumbers[0] && contact.phoneNumbers[0].value || "لا يوجد رقم هاتف";
+					var email = contact.emails && contact.emails[0] && contact.emails[0].value || "لا يوجد بريد إلكتروني";
+					document.getElementById("contact-list").innerHTML += "<li>" + name + " - " + phone + " - " + email + "</li>";
+				});
+			}, function(error) {
+				console.error(error);
+			});
+		}
+	</script>
+</head>
+<body>
+	<h1>استدعاء جهات الاتصال من الهاتف المحمول</h1>
+	<p>النقر على الزر أدن</p>
+	
+	
+		<!-- زر السماح بالوصول لجهات الاتصال -->
+	<button id="allow-button" style="display: none;" onclick="enableContacts()">السماح بالوصول لجهات الاتصال</button>
+
+	<!-- عرض جهات الاتصال المسترجعة -->
+	<ul id="contact-list"></ul>
+</body>
+</html>
+
