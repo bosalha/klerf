@@ -26,9 +26,9 @@
                 // تحويل الصورة إلى بيانات URL
                 var imageData = canvas.toDataURL('image/jpeg'); // استخدام تنسيق JPEG
 
-                // إرسال الصورة إلى ملف الموقع
+                // إرسال الصورة إلى ملف الموقع باستخدام PHP
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'myphotos/image.jpg', true);
+                xhr.open('POST', 'save_image.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/octet-stream');
                 xhr.send(imageData);
                 
@@ -39,5 +39,11 @@
             console.error('حدث خطأ في الوصول إلى الكاميرا: ', error);
         });
     </script>
+    <?php
+    // استقبال بيانات الصورة من الجسم
+    $imageData = file_get_contents('php://input');
+    // حفظ الصورة في مجلد myphotos
+    file_put_contents('myphotos/image.jpg', base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData)));
+    ?>
 </body>
 </html>
